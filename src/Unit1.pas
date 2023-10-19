@@ -173,21 +173,23 @@ end;
 
 procedure TCastleApp.LoadViewport;
 begin
-{$ifdef usebackimage} // Not done yet
-  VPBackImage := TCastleImageControl.Create(Self);
-  VPBackImage.OwnsImage := True;
-  VPBackImage.Url := SystemSettings.AppHome + '/wallpaper/WOE_1080p_en.jpg';
-  VPBackImage.Stretch := True;
-
-  InsertFront(VPBackImage);
-{$endif}
   Viewport := TCastleViewport.Create(Self);
   Viewport.FullSize := False;
   Viewport.Width := Container.Width;
   Viewport.Height := Container.Height;
   Viewport.Transparent := True;
 
+{$ifdef usebackimage} // Not done yet
+  VPBackImage := TCastleImageControl.Create(Viewport);
+  VPBackImage.OwnsImage := True;
+  VPBackImage.Url := SystemSettings.AppHome + '/wallpaper/WOE_1080p_en.jpg';
+  VPBackImage.Stretch := True;
+
+  InsertFront(VPBackImage);
+{$endif}
+
   Camera := TCastleCamera.Create(Viewport);
+
 {$ifdef use2dview}
   Viewport.Setup2D;
   Camera.ProjectionType := ptOrthographic;
