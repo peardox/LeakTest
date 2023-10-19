@@ -3,7 +3,7 @@ unit Unit1;
 interface
 
 // {$define usex3d}
-// {$define use2dview}
+ {$define use2dview}
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
@@ -143,14 +143,16 @@ begin
 {$else}
   ActiveScene := LoadScene('castle-data:/knight.gltf');
 {$endif}
-  ActiveScene.Normalize;
   if Assigned(ActiveScene) then
-    Viewport.Items.Add(ActiveScene);
+    begin
+      ActiveScene.Normalize;
+      Viewport.Items.Add(ActiveScene);
 {$ifdef usedebugbox} // Not done yet
-  dbg := TDebugTransformBox.Create(Self);
-  dbg.Parent := ActiveScene;
-  dbg.Exists := True;
+      dbg := TDebugTransformBox.Create(Self);
+      dbg.Parent := ActiveScene;
+      dbg.Exists := True;
 {$endif}
+    end;
 end;
 
 procedure TCastleApp.Stop;
