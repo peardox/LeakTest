@@ -96,6 +96,10 @@ end;
 
 destructor TCastleApp.Destroy;
 begin
+//  FreeAndNil(Camera);
+//  FreeAndNil(CameraLight);
+//  FreeAndNil(Viewport);
+//  FreeAndNil(ActiveScene);
   inherited;
 end;
 
@@ -170,20 +174,20 @@ end;
 procedure TCastleApp.LoadViewport;
 begin
 {$ifdef usebackimage} // Not done yet
-  VPBackImage := TCastleImageControl.Create(Owner);
+  VPBackImage := TCastleImageControl.Create(Self);
   VPBackImage.OwnsImage := True;
   VPBackImage.Url := SystemSettings.AppHome + '/wallpaper/WOE_1080p_en.jpg';
   VPBackImage.Stretch := True;
 
   InsertFront(VPBackImage);
 {$endif}
-  Viewport := TCastleViewport.Create(Owner);
+  Viewport := TCastleViewport.Create(Self);
   Viewport.FullSize := False;
   Viewport.Width := Container.Width;
   Viewport.Height := Container.Height;
   Viewport.Transparent := True;
 
-  Camera := TCastleCamera.Create(Owner);
+  Camera := TCastleCamera.Create(Viewport);
 {$ifdef use2dview}
   Viewport.Setup2D;
   Camera.ProjectionType := ptOrthographic;
