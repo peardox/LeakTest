@@ -2,7 +2,7 @@ unit Unit1;
 
 interface
 
- {$define usex3d}
+// {$define usex3d}
 // {$define use2dview}
 
 uses
@@ -16,12 +16,15 @@ type
   { TCastleSceneHelper }
   TCastleSceneHelper = class helper for TCastleScene
     function Normalize: Boolean;
+    { Fit the Scene in a 1x1x1 box }
   end;
 
   { TCastleSceneHelper }
   TCastleCameraHelper = class helper for TCastleCamera
-    procedure ViewFromRadius(const ARadius: Single; const ADirection: TVector3);
+    procedure ViewFromRadius(const ARadius: Single; const ACamPos: TVector3);
+    { Position Camera ARadius from Origin pointing at Origin }
   end;
+
   { TCastleApp }
   TCastleApp = class(TCastleView)
     procedure Update(const SecondsPassed: Single; var HandleInput: Boolean); override; // TCastleUserInterface
@@ -44,6 +47,7 @@ type
     destructor Destroy; override;
   end;
 
+  { TForm }
   TForm1 = class(TForm)
     procedure FormCreate(Sender: TObject);
   private
@@ -96,10 +100,6 @@ end;
 
 destructor TCastleApp.Destroy;
 begin
-//  FreeAndNil(Camera);
-//  FreeAndNil(CameraLight);
-//  FreeAndNil(Viewport);
-//  FreeAndNil(ActiveScene);
   inherited;
 end;
 
@@ -222,14 +222,14 @@ begin
   end;
 end;
 
-procedure TCastleCameraHelper.ViewFromRadius(const ARadius: Single; const ADirection: TVector3);
+procedure TCastleCameraHelper.ViewFromRadius(const ARadius: Single; const ACamPos: TVector3);
 var
   Spherical: TVector3;
 begin
-  Spherical := ADirection.Normalize;
+  Spherical := ACamPos.Normalize;
   Spherical := Spherical * ARadius;
   Up := Vector3(0, 1, 0);
-  Direction := -ADirection;
+  Direction := -ACamPos;
   Translation  := Spherical;
 end;
 
